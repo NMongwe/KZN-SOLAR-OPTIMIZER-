@@ -11,11 +11,6 @@ img {image-rendering: -webkit-optimize-contrast;}
 """, unsafe_allow_html=True)
 
 st.image("logo.jpg", width=350)  # or your logo name
-# Make logo HD in code
-logo = Image.open("logo.png")
-# Upscale 3x with high quality
-w, h = logo.size
-logo_hd = logo.resize((w*3, h*3), Image.LANCZOS)
 
 st.image(logo_hd, width=350)  # width keeps it sharp
 st.title("KZN Solar Optimization - NASA POWER")
