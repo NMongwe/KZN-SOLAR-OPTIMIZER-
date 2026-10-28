@@ -3,7 +3,7 @@
 **From Equation to Impact | Built by Ntusani & Nontando | University of Zululand**
 
 Live Demo: [Your Streamlit Link Here]
-Logo: ![logo](logo.png)
+Logo: ![logo](logo.jpg)
 
 ### Why This Tool?
 Most solar calculators use US/EU data. Wrong for KZN latitude. Homes in Richards Bay, Durban, and Nongoma need local tilt.
@@ -37,6 +37,7 @@ Python, Streamlit, Matplotlib, Requests, NASA POWER
 
 ### Founders
 Ntusani - CS, Model Development 
+
 Nontando - Data & Validation
 
 ### How to Run Locally
