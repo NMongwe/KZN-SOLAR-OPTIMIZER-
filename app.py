@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-st.image("logo.png", width=150)  # or your logo name
+st.image("logo.jpg", width=150)  # or your logo name
 st.title("KZN Solar Optimization - NASA POWER")
 
 st.set_page_config(page_title="ModelForge Hub - KZN Solar", page_icon="☀️", layout="wide")
