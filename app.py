@@ -4,8 +4,20 @@ import math
 import matplotlib.pyplot as plt
 
 import streamlit as st
+st.markdown("""
+<style>
+img {image-rendering: -webkit-optimize-contrast;}
+</style>
+""", unsafe_allow_html=True)
 
 st.image("logo.jpg", width=350)  # or your logo name
+# Make logo HD in code
+logo = Image.open("logo.png")
+# Upscale 3x with high quality
+w, h = logo.size
+logo_hd = logo.resize((w*3, h*3), Image.LANCZOS)
+
+st.image(logo_hd, width=350)  # width keeps it sharp
 st.title("KZN Solar Optimization - NASA POWER")
 
 st.set_page_config(page_title="ModelForge Hub - KZN Solar", page_icon="☀️", layout="wide")
@@ -98,7 +110,7 @@ with col2:
         fig2, ax2 = plt.subplots()
         ax2.plot(month_names, tilts, marker='o', color="#0A1931", linewidth=3)
         ax2.set_ylabel("Optimal Tilt (°)")
-        ax2.set_title("Optimal Panel Tilt by Month (Your Physics Model)")
+        ax2.set_title("Optimal Panel Tilt by Month")
         ax2.grid(True, alpha=0.3)
         st.pyplot(fig2)
 
