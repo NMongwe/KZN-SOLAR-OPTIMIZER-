@@ -2,7 +2,7 @@
 
 **From Equation to Impact | Built by Ntusani & Nontando | University of Zululand**
 
-Live Demo: [Your Streamlit Link Here]
+Live Demo: https://kznsolaroptimizer.streamlit.app/
 Logo: ![logo](logo.jpg)
 
 ### Why This Tool?
