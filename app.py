@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import matplotlib.pyplot as plt
 import pandas as pd
+import math
 
 st.set_page_config(page_title="ModelForge Hub - KZN Solar", page_icon="☀️", layout="wide")
 
@@ -85,11 +86,26 @@ with col2:
         month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
         days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
 
-        # === YEARLY AUTO CALC ADDED HERE ===
-        monthly_kwh = [ghi * days * system_kw * pr for ghi, days in zip(nasa, days_in_month)]
-        yearly_total = sum(monthly_kwh)
+        # === YEARLY CALC - BOTH FIXED AND ADJUSTABLE ===
+        monthly_kwh_optimal = [ghi * days * system_kw * pr for ghi, days in zip(nasa, days_in_month)]
+        yearly_optimal = sum(monthly_kwh_optimal)
         
-        st.metric(f"Yearly Yield for {town} ({system_kw}kWp)", f"{yearly_total:,.0f} kWh/year", f"{yearly_total/12:,.0f} kWh/month avg")
+        # Fixed tilt is average of all tilts
+        fixed_tilt = sum(tilts)/12
+        # Cosine loss if fixed vs optimal each month
+        monthly_kwh_fixed = [
+            ghi * days * system_kw * pr * math.cos(math.radians(fixed_tilt - opt_tilt))
+            for ghi, days, opt_tilt in zip(nasa, days_in_month, tilts)
+        ]
+        yearly_fixed = sum(monthly_kwh_fixed)
+        loss_pct = (yearly_optimal - yearly_fixed) / yearly_optimal * 100
+
+        # Two metrics side by side
+        m1, m2 = st.columns(2)
+        m1.metric(f"Max Yield (Adjust Monthly)", f"{yearly_optimal:,.0f} kWh/year", f"{yearly_optimal/12:,.0f} /month avg")
+        m2.metric(f"Realistic Yield (Fixed {fixed_tilt:.1f}°)", f"{yearly_fixed:,.0f} kWh/year", f"-{loss_pct:.1f}% vs adjustable", delta_color="off")
+
+        st.caption(f"ℹ️ You caught it: Adjustable = if you re-tilt every month. Fixed = one angle on roof forever (realistic). Difference is cosine loss.")
 
         fig, ax = plt.subplots()
         ax.bar(month_names, nasa, color="#FF6A00")
@@ -99,27 +115,32 @@ with col2:
 
         fig2, ax2 = plt.subplots()
         ax2.plot(month_names, tilts, marker='o', color="#0A1931", linewidth=3)
+        ax2.axhline(fixed_tilt, linestyle='--', color='red', label=f'Fixed Avg {fixed_tilt:.1f}°')
         ax2.set_ylabel("Optimal Tilt (°)")
         ax2.set_title("Optimal Tilt by Month")
+        ax2.legend()
         ax2.grid(True, alpha=0.3)
         st.pyplot(fig2)
 
         fig3, ax3 = plt.subplots()
-        ax3.bar(month_names, monthly_kwh, color="#2E8B57")
+        ax3.bar(month_names, monthly_kwh_optimal, color="#2E8B57", alpha=0.6, label="Optimal Tilt")
+        ax3.bar(month_names, monthly_kwh_fixed, color="#0A1931", alpha=0.9, label=f"Fixed {fixed_tilt:.1f}°")
         ax3.set_ylabel("kWh")
-        ax3.set_title(f"Monthly Energy Yield ({system_kw}kWp)")
+        ax3.set_title(f"Monthly Yield: Optimal vs Fixed ({system_kw}kWp)")
+        ax3.legend()
         st.pyplot(fig3)
 
         st.dataframe({
             "Month": month_names,
             "GHI (kWh/m2/day)": [f"{v:.2f}" for v in nasa],
-            "Tilt (°)": [f"{t:.1f}" for t in tilts],
-            "Energy (kWh)": [f"{k:.0f}" for k in monthly_kwh]
+            "Optimal Tilt (°)": [f"{t:.1f}" for t in tilts],
+            "Optimal kWh": [f"{k:.0f}" for k in monthly_kwh_optimal],
+            f"Fixed {fixed_tilt:.1f}° kWh": [f"{k:.0f}" for k in monthly_kwh_fixed]
         })
 
-        st.info(f"Recommendation: Fixed tilt {sum(tilts)/12:.1f}° facing North for {st.session_state['loc']}. Annual: {yearly_total:,.0f} kWh")
+        st.info(f"Recommendation: Fixed tilt {fixed_tilt:.1f}° facing North for {st.session_state['loc']}. Fixed Yield: {yearly_fixed:,.0f} kWh/year | Max if adjustable: {yearly_optimal:,.0f} kWh/year")
     else:
         st.info("👈 Select town in sidebar and click Calculate. Built for all KZN towns.")
 
 st.divider()
-st.caption("Data: NASA POWER ALLSKY_SFC_SW_DWN. ModelForge Hub V1.2")
+st.caption("Data: NASA POWER ALLSKY_SFC_SW_DWN. ModelForge Hub V1.3 | Fixed tilt uses cos(fixed-optimal) correction") 
