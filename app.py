@@ -143,4 +143,5 @@ with col2:
         st.info("👈 Select town in sidebar and click Calculate. Built for all KZN towns.")
 
 st.divider()
+st.caption("© 2026 ModelForge Hub | Built by Ntusani & Nontando - University of Zululand | MIT Licensed | Original: knsolaroptimizer.streamlit.app")
 st.caption("Data: NASA POWER ALLSKY_SFC_SW_DWN. ModelForge Hub V1.3 | Fixed tilt uses cos(fixed-optimal) correction") 
