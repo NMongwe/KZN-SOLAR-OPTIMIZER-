@@ -10,14 +10,52 @@ st.title("KZN Solar Optimization - NASA POWER")
 
 st.set_page_config(page_title="ModelForge Hub - KZN Solar", page_icon="☀️", layout="wide")
 
-# Your KZN locations - add Nongoma!
-LOCATIONS = {
-    "Richards Bay": (-28.78, 32.09),
-    "Durban": (-29.85, 31.02),
-    "Nongoma (Rural)": (-27.89, 31.64),
-    "Esikhaleni": (-28.83, 31.90),
-    "Empangeni": (-28.72, 31.88),
-    "Custom": (None, None)
+KZN_TOWNS = {
+    # King Cetshwayo / Zululand (your core)
+    "Richards Bay": (-28.7807, 32.0383),
+    "Empangeni": (-28.7672, 31.8927),
+    "Eshowe": (-28.8946, 31.4637),
+    "Nkandla": (-28.6270, 31.0898),
+    "Ulundi": (-28.3351, 31.4162),
+    "Nongoma": (-27.8900, 31.6461),
+    "Pongola": (-27.3638, 31.6211),
+    "Vryheid": (-27.7692, 30.7912),
+    "Mkuze": (-27.6249, 32.0314),
+    "Hluhluwe": (-28.0207, 32.2676),
+    "Mtubatuba": (-28.3593, 32.1847),
+    "St Lucia": (-28.3813, 32.4194),
+    "Jozini": (-27.4320, 32.0687),
+
+    # eThekwini / iLembe
+    "Durban": (-29.8587, 31.0218),
+    "Pinetown": (-29.8211, 30.8669),
+    "Umlazi": (-29.9663, 30.9007),
+    "KwaDukuza (Stanger)": (-29.3568, 31.2354),
+    "Ballito": (-29.5391, 31.2136),
+    "Mandeni": (-29.1593, 31.3938),
+
+    # Midlands / Drakensberg
+    "Pietermaritzburg": (-29.6006, 30.3794),
+    "Howick": (-29.4789, 30.2178),
+    "Mooi River": (-29.2081, 30.0024),
+    "Estcourt": (-28.9973, 29.8757),
+    "Ladysmith": (-28.5597, 29.7803),
+    "Newcastle": (-27.7573, 29.9318),
+    "Dundee": (-28.1643, 30.2344),
+    "Bergville": (-28.7289, 29.3608),
+    "Underberg": (-29.7929, 29.4992),
+
+    # South Coast / Harry Gwala
+    "Port Shepstone": (-30.7415, 30.4439),
+    "Margate": (-30.8577, 30.3688),
+    "Kokstad": (-30.5478, 29.4255),
+    "Ixopo": (-30.1585, 30.0608),
+}
+
+# In your app
+town = st.selectbox("📍 Select KZN Town", sorted(KZN_TOWNS.keys()))
+lat, lon = KZN_TOWNS[town]
+st.caption(f"Using NASA POWER data for {town} ({lat}, {lon})")
 }
 
 def fetch_nasa_data(lat, lon):
