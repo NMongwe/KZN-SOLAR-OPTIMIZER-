@@ -14,7 +14,7 @@ st.set_page_config(
 col1, col2 = st.columns([1, 5])
 with col1:
     try:
-        st.image("logo.png", width=350)
+        st.image("logo.jpg", width=350)
     except:
         st.markdown("### 🪐")
 with col2:
