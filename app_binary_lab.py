@@ -12,7 +12,7 @@ try:
 except:
     st.markdown("### 🌍 ModelForge Hub")
 
-st.title("ModelForge - Solar System Multi-Sun Lab V3.6")
+st.title("ModelForge - Solar System Multi-Sun Lab")
 st.caption(" | What if our Solar System orbited 2,3,4,5 Suns? | Planets Only")
 st.warning("⚠️ HYPOTHETICAL: Real system has 1 Sun. This explores how YEARS change with N suns.")
 
