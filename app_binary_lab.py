@@ -7,7 +7,7 @@ import pandas as pd
 st.set_page_config(page_title="ModelForge - Multi-Sun", page_icon="🌍", layout="wide")
 
 try:
-    st.image("logo.png", width=350)
+    st.image("logo.jpg", width=350)
 except:
     st.markdown("## 🌍 ModelForge Hub")
 
