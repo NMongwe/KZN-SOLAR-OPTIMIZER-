@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 import math
 import pandas as pd
 
-st.set_page_config(page_title="ModelForge - Multi-Sun V3.5", page_icon="🌍", layout="wide")
+st.set_page_config(page_title="ModelForge - Multi-Sun", page_icon="🌍", layout="wide")
 
 try:
-    st.image("logo.png", width=180)
+    st.image("logo.png", width=350)
 except:
     st.markdown("## 🌍 ModelForge Hub")
 
-st.title("ModelForge - Solar System Multi-Sun Lab V3.5")
+st.title("ModelForge - Solar System Multi-Sun Lab")
 st.caption("What if our Solar System orbited 2,3,4,5 Suns? | Planets Only Edition")
 st.warning("⚠️ HYPOTHETICAL: Real system has 1 Sun. This explores how YEARS change with N suns.")
 
@@ -140,4 +140,4 @@ st.info(f"""
 # --- FOOTER ---
 st.divider()
 st.caption(f"Equation: P_new = sqrt(a^3 / (N*M)) * 365.25 | L_total = N * R^2 * (T/5778)^4 | HZ = sqrt(L_total) * [0.95-1.67]")
-st.caption(f"© 2026 ModelForge Hub | App 3 - Solar System Multi-Sun Lab V3.5 | Built by Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS) | UniZulu")
+st.caption(f"© 2026 ModelForge Hub | Solar System Multi-Sun Lab | Built by Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS) | UniZulu")
