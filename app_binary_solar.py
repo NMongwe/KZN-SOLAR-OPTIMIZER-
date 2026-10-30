@@ -11,7 +11,7 @@ try:
 except:
     st.markdown("### 🌌 ModelForge")
 
-st.title("🌌 ModelForge - KZN Binary Solar Model V1.1")
+st.title("🌌 ModelForge - KZN Binary Solar Model")
 st.markdown("** ModelForge Hub | What if KZN had two suns?**")
 st.info("**Disclaimer:** Earth has ONE Sun. This is a hypothetical educational simulator using Stefan-Boltzmann Law L=4πR²σT⁴, inspired by real binary systems like Kepler-16b & Alpha Centauri. For teaching astrophysics + solar engineering.")
 
@@ -125,4 +125,4 @@ col_b.metric("Annual Yield Binary Sun", f"{annual_binary:.0f} kWh", f"+{annual_b
 
 st.markdown("---")
 st.markdown("**Equation:** `GHI_binary = GHI_NASA * (1 + 0.3 * L_comp/L_sun)` where `L ∝ T⁴` | **Barycenter Shift:** `tilt_binary = tilt_single - 2*L_ratio`")
-st.markdown("© 2026 ModelForge Hub | App 2 - Binary Solar Model | Built by Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS) | UniZulu")
+st.markdown("© 2026 ModelForge Hub | Binary Solar Model | Built by Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS) | UniZulu")
