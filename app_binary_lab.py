@@ -202,8 +202,8 @@ with right:
     - **Binary Yield:** **{yield_binary:.0f} kWh/yr** (+{((yield_binary/yield_single)-1)*100:.0f}%)
     """)
     
-    if "HOME" in town:
-        st.success(f" **Nongoma H:** {yield_single:.0f} kWh real → {yield_binary:.0f} kWh binary! Zululand shines!")
+    if "Nongoma" in town:
+        st.success(f" **Nongoma :** {yield_single:.0f} kWh real → {yield_binary:.0f} kWh binary! Zululand shines!")
     
     if is_stable:
         st.success(f"✅ Stable: {planet_dist} AU > {stable_limit:.1f} AU")
