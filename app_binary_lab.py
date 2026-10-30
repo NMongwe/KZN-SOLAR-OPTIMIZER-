@@ -5,8 +5,8 @@ import math
 
 st.set_page_config(page_title="ModelForge - Solar System Multi-Sun V3.2", page_icon="🌍", layout="wide")
 
-st.title("🌍 ModelForge - Solar System Multi-Sun Lab V3.2")
-st.markdown("**App 3 of 3 | What if our Solar System orbited 2,3,4,5 Suns? | Planets Only Edition**")
+st.title("🌍 ModelForge - Solar System Multi-Sun Lab V2.0")
+st.markdown(" | What if our Solar System orbited 2,3,4,5 Suns? | Planets Only Edition**")
 st.warning("⚠️ HYPOTHETICAL PLANETARY SCIENCE: Real Solar System has 1 Sun. This lab explores how YEARS change with N suns.")
 
 # --- PLANETS DATA ONLY ---
