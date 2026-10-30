@@ -4,52 +4,37 @@
 
 <h1 align="center">🌌 ModelForge Hub - KZN Solar & Binary Star Systems</h1>
 
-### UniZulu BSc Applied Maths & Physics / CS Final Year Project
-**Authors:** Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS)
+# 🌍 ModelForge Hub - 3 Apps | UniZulu | KZN
 
-A unified hub of solar optimization models, bridging solar engineering and astrophysics education for KZN's 32 nodes.
+**Built by Ntusani Mongwe & Nontando Tsewu | University of Zululand (UniZulu) | South Africa**
+Applied Maths & Physics Project 2026
 
----
-
-### 🌐 Live Apps (Same Repo, Multiple Deployments)
-
-| App | File | Description | Link |
-|---|---|---|---|
-| **App 1: KZN Solar Optimizer V1.0** | `app.py` | Stable single-sun model. Fetches NASA GHI for 32 KZN towns, calculates optimal tilt =abs(lat) + dec*0.5, compares fixed vs adjustable yield. For assessment. | https://kznsolaroptimizer.streamlit.app/|
-| **App 2: KZN Binary Solar Model V1.1** | `app_binary_solar.py` | **NEW** - Hypothetical binary sun extension. Adds second sun using Stefan-Boltzmann Law L=4πR²σT⁴. Shows GHI boost and tilt shift toward barycenter. Educational simulator inspired by Kepler-16b. | https://binarysolar.streamlit.app/ |
-| **App 3: Binary Star Lab V2.0** | `app_binary_lab.py` | **COMING** - Pure astrophysics simulator. Calculates Kepler's Third Law P²=a³/(M1+M2), barycenter, light curves. | [kznbinarystars.streamlit.app] |
-
-All apps deploy from this single repository by selecting different main files on Streamlit Cloud.
+Live Apps:
+- **App 1 - Solar Optimizer KZN:** https://kznsolaroptimizer.streamlit.app/
+- **App 2 - KZN Binary Solar Model:** https://binarysolar.streamlit.app/
+- **App 3 - Multi-Sun Lab :** https://mfhmultisuns.streamlit.app/
 
 ---
 
-### 📖 App 2 - Detailed Explanation
+### App 1: Solar Optimizer - KZN Region
+**https://kznsolaroptimizer.streamlit.app/**
+Real-world solar for KZN. NASA POWER GHI, pvlib tilt/azimuth, Eskom/eThekwini ROI. 1 Sun only.
 
-**Problem:**
-- Earth has one Sun, but >50% of Milky Way systems are binary.
-- Standard solar calculators cannot answer: "What if a KZN town had two suns?"
-- Need to teach L ∝ T⁴ interactively.
+### App 2: KZN Binary Solar Model  (THIS APP)
+**https://binarysolar.streamlit.app/**
+**What if KZN had two suns?**
+Hypothetical educational simulator for ANY town in KZN.
+- Real GHI Avg per KZN town (from NASA POWER)
+- Hypothetical physics: 2 Suns binary, Stefan-Boltzmann Law L=4πR²σT⁴, Kepler's Law P²=a³/M_total
+- Inspired by real binary systems Kepler-16b & Alpha Centauri
+- Disclaimer: Earth has ONE Sun — for teaching astrophysics + solar engineering
+- Use: See how solar generation in KZN towns changes if luminosity doubles
 
-**Solution:**
-- Toggle companion star: Red Dwarf (3000K), White Dwarf (8000K), Blue Giant (15000K), Twin Sun (5800K)
-- Physics: `GHI_binary = GHI_NASA * (1 + 0.3 * L_ratio)` and `tilt_binary = tilt_single - 2*L_ratio`
+### App 3: Multi-Sun Lab (Flagship)
+**https://mfhmultisuns.streamlit.app/**
+Pure space physics. What if Solar System orbited 2,3,4,5 Suns? N=1-5, Mass, Temp, Radius, Distance. Year 365d → 258d with 2 Suns, HZ 0.95-1.67 → 1.34-2.36 AU (HZ = sqrt(L_total)*[0.95-1.67]). HABITABLE = liquid water 0-100°C, NOT = boils >200°C or freezes <-100°C. Mars becomes new Earth.
 
-**Disclaimer:**
-> Earth has ONE Sun. App 2 is hypothetical educational simulator using Stefan-Boltzmann Law. Inspired by Kepler-16b.
+Tech: Python, Streamlit, NumPy, Matplotlib, pvlib, NASA POWER
+Keywords: ModelForge Hub, UniZulu, KZN solar, binary sun KZN, two suns Durban, multi-sun lab, habitable zone, Kepler-16b
 
----
-
-### 🚀 Deploy Multiple Apps from One Repo
-1. Push all `app_*.py` files + `logo.jpg` to this repo
-2. share.streamlit.io → New App → Select repo → Change Main file path to `app.py` or `app_binary_solar.py`
-3. Deploy → 3 URLs from 1 repo
-
-### 🧪 Tech Stack
-Python, Streamlit, NASA POWER API, Matplotlib
-
-### 📜 License
-Educational Use - University of Zululand 2026
-
-<p align="center">
-  <img src="logo.jpg" width="120" alt="ModelForge Logo Footer"/>
-</p>
+© 2026 ModelForge Hub - From Equation to Impact
