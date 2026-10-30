@@ -1,34 +1,55 @@
-# ☀️ ModelForge Hub - KZN Solar Optimization Tool
+<p align="center">
+  <img src="logo.jpg" width="250" alt="ModelForge Hub Logo"/>
+</p>
 
-**From Equation to Impact | University of Zululand**
+<h1 align="center">🌌 ModelForge Hub - KZN Solar & Binary Star Systems</h1>
 
-Live Demo: https://kznsolaroptimizer.streamlit.app/
-Logo: ![logo](logo.jpg)
+### UniZulu BSc Applied Maths & Physics / CS Final Year Project
+**Authors:** Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS)
 
-### The Problem
-Most solar calculators use national averages. In KZN, Durban is not Newcastle. A generic 32° tilt costs rural homes 12-18% yield. We built a town-specific optimizer for all 32 major KZN towns.
+A unified hub of solar optimization models, bridging solar engineering and astrophysics education for KZN's 32 nodes.
 
-### What This App Does
-1.  **Fetches Real NASA POWER Data:** Live call to NASA POWER API for `ALLSKY_SFC_SW_DWN`. 20-year climatology. Falls back to KZN average if offline.
-2.  **Two Yield Models:** Max Yield (Adjustable) vs Realistic Yield (Fixed) corrected by `cos(fixed - optimal)` for cosine loss.
-3.  **Inputs:** System size (kWp) and Performance Ratio (0.6-0.9)
-4.  **Visuals:** NASA GHI chart, Optimal Tilt by month, Monthly Yield comparison
+---
 
-### Supported Towns (32 KZN Nodes)
-Richards Bay, Empangeni, Eshowe, Nkandla, Ulundi, Nongoma, Pongola, Vryheid, Mkuze, Hluhluwe, Mtubatuba, St Lucia, Jozini, Durban, Pinetown, Umlazi, KwaDukuza, Ballito, Mandeni, Pietermaritzburg, Howick, Mooi River, Estcourt, Ladysmith, Newcastle, Dundee, Bergville, Underberg, Port Shepstone, Margate, Kokstad, Ixopo
+### 🌐 Live Apps (Same Repo, Multiple Deployments)
 
-### Physics Model
-`tilt = |lat| + declination * 0.5` clamped 5°-45° | `monthly_kwh = GHI * days * system_kw * PR`
+| App | File | Description | Link |
+|---|---|---|---|
+| **App 1: KZN Solar Optimizer V1.0** | `app.py` | Stable single-sun model. Fetches NASA GHI for 32 KZN towns, calculates optimal tilt = |lat| + dec*0.5, compares fixed vs adjustable yield. For assessment. | [kznsolar.streamlit.app] |
+| **App 2: KZN Binary Solar Model V1.1** | `app_binary_solar.py` | **NEW** - Hypothetical binary sun extension. Adds second sun using Stefan-Boltzmann Law L=4πR²σT⁴. Shows GHI boost and tilt shift toward barycenter. Educational simulator inspired by Kepler-16b. | [kznbinarysolar.streamlit.app] |
+| **App 3: Binary Star Lab V2.0** | `app_binary_lab.py` | **COMING** - Pure astrophysics simulator. Calculates Kepler's Third Law P²=a³/(M1+M2), barycenter, light curves. | [kznbinarystars.streamlit.app] |
 
-### Roadmap - The Hexagon System
-V1.1: Solar Tilt + NASA (NOW - Node 1) | V1.2: Battery Sizing | V1.3: Prepaid Checker | V1.4: JoJo + Solar Hybrid
+All apps deploy from this single repository by selecting different main files on Streamlit Cloud.
 
-### Founders
-**Ntusani Mongwe** - BSc in Applied Mathematics and Physics, University of Zululand | Model Development & App Architecture
-**Nontando Tsewu** - BSc in Applied Mathematics and Computer Science, University of Zululand | Data & Validation, Nongoma Field Testing
+---
 
-### How to Run Locally
-pip install -r requirements.txt
-streamlit run app.py
+### 📖 App 2 - Detailed Explanation
 
-© 2026 ModelForge Hub | Built by Ntusani Mongwe & Nontando Tsewu | University of Zululand
+**Problem:**
+- Earth has one Sun, but >50% of Milky Way systems are binary.
+- Standard solar calculators cannot answer: "What if a KZN town had two suns?"
+- Need to teach L ∝ T⁴ interactively.
+
+**Solution:**
+- Toggle companion star: Red Dwarf (3000K), White Dwarf (8000K), Blue Giant (15000K), Twin Sun (5800K)
+- Physics: `GHI_binary = GHI_NASA * (1 + 0.3 * L_ratio)` and `tilt_binary = tilt_single - 2*L_ratio`
+
+**Disclaimer:**
+> Earth has ONE Sun. App 2 is hypothetical educational simulator using Stefan-Boltzmann Law. Inspired by Kepler-16b.
+
+---
+
+### 🚀 Deploy Multiple Apps from One Repo
+1. Push all `app_*.py` files + `logo.jpg` to this repo
+2. share.streamlit.io → New App → Select repo → Change Main file path to `app.py` or `app_binary_solar.py`
+3. Deploy → 3 URLs from 1 repo
+
+### 🧪 Tech Stack
+Python, Streamlit, NASA POWER API, Matplotlib
+
+### 📜 License
+Educational Use - University of Zululand 2026
+
+<p align="center">
+  <img src="logo.jpg" width="120" alt="ModelForge Logo Footer"/>
+</p>
