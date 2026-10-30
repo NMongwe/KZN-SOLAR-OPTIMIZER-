@@ -7,7 +7,7 @@ import calendar
 st.set_page_config(page_title="ModelForge - Binary Solar Model", layout="wide")
 
 try:
-    st.image("logo.jpg", width=120)
+    st.image("logo.jpg", width=350)
 except:
     st.markdown("### 🌌 ModelForge")
 
