@@ -16,7 +16,9 @@ A unified hub of solar optimization models, bridging solar engineering and astro
 | App | File | Description | Link |
 |---|---|---|---|
 | **App 1: KZN Solar Optimizer V1.0** | `app.py` | Stable single-sun model. Fetches NASA GHI for 32 KZN towns, calculates optimal tilt = |lat| + dec*0.5, compares fixed vs adjustable yield. For assessment. | https://kznsolaroptimizer.streamlit.app/|
+
 | **App 2: KZN Binary Solar Model V1.1** | `app_binary_solar.py` | **NEW** - Hypothetical binary sun extension. Adds second sun using Stefan-Boltzmann Law L=4πR²σT⁴. Shows GHI boost and tilt shift toward barycenter. Educational simulator inspired by Kepler-16b. | https://binarysolar.streamlit.app/ |
+
 | **App 3: Binary Star Lab V2.0** | `app_binary_lab.py` | **COMING** - Pure astrophysics simulator. Calculates Kepler's Third Law P²=a³/(M1+M2), barycenter, light curves. | [kznbinarystars.streamlit.app] |
 
 All apps deploy from this single repository by selecting different main files on Streamlit Cloud.
