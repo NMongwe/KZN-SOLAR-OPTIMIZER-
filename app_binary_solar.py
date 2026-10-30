@@ -12,7 +12,7 @@ except:
     st.markdown("### 🌌 ModelForge")
 
 st.title("🌌 ModelForge - KZN Binary Solar Model V1.1")
-st.markdown("**App 2 of ModelForge Hub | What if KZN had two suns?**")
+st.markdown("** ModelForge Hub | What if KZN had two suns?**")
 st.info("**Disclaimer:** Earth has ONE Sun. This is a hypothetical educational simulator using Stefan-Boltzmann Law L=4πR²σT⁴, inspired by real binary systems like Kepler-16b & Alpha Centauri. For teaching astrophysics + solar engineering.")
 
 TOWNS = {
