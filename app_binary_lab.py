@@ -2,7 +2,10 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-
+try:
+ st.image("logo.jpg", width=350)
+except:
+    pass
 st.set_page_config(page_title="ModelForge - Solar System Multi-Sun V3.2", page_icon="🌍", layout="wide")
 
 st.title("🌍 ModelForge - Solar System Multi-Sun Lab V2.0")
