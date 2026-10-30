@@ -8,7 +8,7 @@ st.set_page_config(page_title="ModelForge - Multi-Sun ", page_icon="🌍", layou
 
 # --- LOGO ---
 try:
-    st.image("logo.png", width=200)
+    st.image("logo.jpg", width=350)
 except:
     st.markdown("### 🌍 ModelForge Hub")
 
@@ -159,6 +159,6 @@ st.info(f"🔬 **Summary for {num_suns} Suns:** Light {L_total:.2f}x → HZ move
 # --- FOOTER + FIX FOR MANAGE APP BUTTON ---
 st.divider()
 st.caption(f"Equation: P_new = sqrt(a³ / (N*M)) × 365.25 | L_total = N × R² × (T/5778)⁴ | HZ ∝ sqrt(L_total) | r = a×M2/(M1+M2)")
-st.caption(f"© 2026 ModelForge Hub | App 3 - Solar System Multi-Sun Lab V3.6 | Built by Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS) | UniZulu")
+st.caption(f"© 2026 ModelForge Hub | Solar System Multi-Sun Lab | Built by Ntusani Mongwe (Applied Maths & Physics) & Nontando Tsewu (Applied Maths & CS) | UniZulu")
 # Extra space so "Manage app" button on mobile doesn't cover text
 st.markdown("<br><br><br><br><br><br>", unsafe_allow_html=True)
