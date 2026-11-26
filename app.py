@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import math
 
+st.markdown('<meta name="google-site-verification" content="MqnrRx3IXUdLrx38ipraZMOZe72LqdVzVpapgIIVLkU"/>', unsafe_allow_html=True)
 st.set_page_config(page_title="ModelForge Hub - KZN Solar", page_icon="☀️", layout="wide")
 
 try:
