@@ -3,7 +3,7 @@ import requests
 import matplotlib.pyplot as plt
 import pandas as pd
 import math
-
+<meta name="google-site-verification" content="MqnrRx3IXUdLrx38ipraZMOZe72LqdVzVpapgIIVLkU" />
 st.set_page_config(page_title="ModelForge Hub - KZN Solar", page_icon="☀️", layout="wide")
 
 try:
