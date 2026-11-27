@@ -4,7 +4,6 @@ import math
 import matplotlib.pyplot as plt
 from PIL import Image
 
-# MUST BE FIRST - before any st.title / st.image
 st.set_page_config(page_title="ModelForge Hub - SA Solar Optimizer", page_icon="☀️", layout="wide")
 
 st.markdown("""
@@ -13,7 +12,6 @@ img {image-rendering: -webkit-optimize-contrast;}
 </style>
 """, unsafe_allow_html=True)
 
-# Logo - safe version, won't crash if logo missing
 try:
     logo = Image.open("logo.jpg")
     w, h = logo.size
@@ -25,7 +23,8 @@ except:
 st.title("☀️ ModelForge Hub - SA Solar Optimizer")
 st.caption("From Equation to Impact | By Ntusani & Nontando - UniZulu | Data: NASA POWER")
 
-# --- ALL PROVINCES + TOWNS ---
+# --- ALL PROVINCES + TOWNS (KEEP YOUR VERSION) ---
+
 PROVINCES = {
     "KwaZulu-Natal": {
         "Durban": (-29.85, 31.02), "Pietermaritzburg": (-29.60, 30.38),
@@ -259,22 +258,14 @@ PROVINCES = {
 }
 
 def fetch_nasa_data(lat, lon):
-    """Fetch real NASA irradiance data - no key needed"""
     url = "https://power.larc.nasa.gov/api/temporal/climatology/point"
-    params = {
-        "parameters": "ALLSKY_SFC_SW_DWN",
-        "community": "RE",
-        "longitude": lon,
-        "latitude": lat,
-        "format": "JSON"
-    }
+    params = {"parameters": "ALLSKY_SFC_SW_DWN","community": "RE","longitude": lon,"latitude": lat,"format": "JSON"}
     try:
         r = requests.get(url, params=params, timeout=15)
         data = r.json()
         monthly = data['properties']['parameter']['ALLSKY_SFC_SW_DWN']
         months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
-        values = [monthly[m] for m in months]
-        return values
+        return [monthly[m] for m in months]
     except:
         return None
 
@@ -290,7 +281,6 @@ with col1:
     province = st.selectbox("1. Choose Province", list(PROVINCES.keys()))
     town = st.selectbox("2. Choose Town", list(PROVINCES[province].keys()))
 
-    # Custom option
     if st.checkbox("Use Custom Coordinates?"):
         lat = st.number_input("Latitude", -35.0, -22.0, -28.78)
         lon = st.number_input("Longitude", 16.0, 33.0, 32.09)
@@ -301,7 +291,15 @@ with col1:
 
     st.metric("Latitude", f"{lat:.2f}°")
     st.metric("Longitude", f"{lon:.2f}°")
-    st.metric("Location", loc_name)
+
+    # NEW: SYSTEM SIZE
+    st.divider()
+    st.subheader("⚙️ Your System")
+    system_kw = st.number_input("System Size (kW)", 1.0, 100.0, 5.0, step=0.5)
+    st.caption("Example: 5kW = ~10 x 500W panels")
+    panel_efficiency = st.slider("System Efficiency %", 70, 95, 85) / 100
+    days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
+    electricity_price = st.number_input("Eskom Price (R/kWh)", 1.0, 10.0, 3.50, step=0.1)
 
     if st.button("Fetch NASA Data & Calculate", type="primary"):
         with st.spinner("Contacting NASA POWER..."):
@@ -309,45 +307,125 @@ with col1:
         st.session_state['nasa'] = nasa_data
         st.session_state['lat'] = lat
         st.session_state['loc'] = loc_name
+        st.session_state['system_kw'] = system_kw
+        st.session_state['eff'] = panel_efficiency
+        st.session_state['price'] = electricity_price
 
 with col2:
     if 'nasa' in st.session_state:
         nasa = st.session_state['nasa']
         lat = st.session_state['lat']
+        system_kw = st.session_state.get('system_kw', 5.0)
+        eff = st.session_state.get('eff', 0.85)
+        price = st.session_state.get('price', 3.50)
 
         if nasa is None:
-            st.warning("NASA offline - using estimated SA average (5.5 kWh/m2/day). Try again on WiFi.")
+            st.warning("NASA offline - using estimated SA average.")
             nasa = [5.8,5.9,5.5,4.8,4.2,3.9,4.0,4.6,5.2,5.6,5.7,5.9]
         else:
-            st.success("Real NASA data loaded! 20-year climatology (2001-2020)")
+            st.success("Real NASA data loaded!")
 
         tilts = [calc_optimal_tilt(lat, i) for i in range(12)]
         month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        days = [31,28,31,30,31,30,31,31,30,31,30,31]
+        fixed_tilt = sum(tilts)/12
 
+        # --- NEW: FIXED vs MONTHLY ADJUSTED CALCULATION ---
+        # Physics: if your tilt is off by X degrees, you lose ~ 0.4% per degree squared (approx)
+        # Adjusted = perfect tilt every month = 100% of NASA sun
+        # Fixed = small loss when optimal tilt != fixed tilt
+
+        fixed_yield = []
+        adjusted_yield = []
+        gain_kwh = []
+
+        for i in range(12):
+            # Adjusted: full NASA value
+            adj_month = nasa[i] * system_kw * days[i] * eff
+            # Fixed: loss factor based on tilt error
+            tilt_error = abs(tilts[i] - fixed_tilt)
+            loss_factor = 1 - (0.004 * tilt_error)  # ~0.4% loss per degree off
+            # Also small winter penalty if tilt far off
+            fixed_month = adj_month * loss_factor
+
+            adjusted_yield.append(adj_month)
+            fixed_yield.append(fixed_month)
+            gain_kwh.append(adj_month - fixed_month)
+
+        total_fixed = sum(fixed_yield)
+        total_adjusted = sum(adjusted_yield)
+        total_gain = total_adjusted - total_fixed
+        gain_pct = (total_gain / total_fixed * 100) if total_fixed > 0 else 0
+        rand_gain = total_gain * price
+
+        # Top metrics
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Fixed Tilt", f"{fixed_tilt:.1f}°")
+        m2.metric("Fixed - Yearly", f"{total_fixed:,.0f} kWh")
+        m3.metric("Adjusted - Yearly", f"{total_adjusted:,.0f} kWh")
+        m4.metric("Extra by Adjusting", f"+{total_gain:,.0f} kWh / +{gain_pct:.1f}%")
+
+        # Chart 1: NASA
         fig, ax = plt.subplots()
         ax.bar(month_names, nasa, color="#FF6A00")
         ax.set_ylabel("Solar Energy (kWh/m2/day)")
         ax.set_title(f"NASA Real Data for {st.session_state['loc']}")
         st.pyplot(fig)
 
+        # Chart 2: Tilt
         fig2, ax2 = plt.subplots()
         ax2.plot(month_names, tilts, marker='o', color="#0A1931", linewidth=3)
+        ax2.axhline(fixed_tilt, color="#FF6A00", linestyle="--", label=f"Fixed {fixed_tilt:.1f}°")
         ax2.set_ylabel("Optimal Tilt (°)")
-        ax2.set_title("Optimal Panel Tilt by Month")
+        ax2.set_title("Optimal Tilt by Month vs Fixed Tilt")
+        ax2.legend()
         ax2.grid(True, alpha=0.3)
         st.pyplot(fig2)
 
+        # Chart 3: NEW - Fixed vs Adjusted kWh per month
+        fig3, ax3 = plt.subplots(figsize=(10,4))
+        x = range(12)
+        ax3.bar([i-0.2 for i in x], fixed_yield, width=0.4, label="Fixed Tilt", color="#0A1931")
+        ax3.bar([i+0.2 for i in x], adjusted_yield, width=0.4, label="Monthly Adjusted", color="#FF6A00")
+        ax3.set_xticks(list(x))
+        ax3.set_xticklabels(month_names)
+        ax3.set_ylabel(f"kWh per Month ({system_kw:.1f}kW system)")
+        ax3.set_title("Fixed vs Monthly Adjusted - Energy You Actually Get")
+        ax3.legend()
+        st.pyplot(fig3)
+
+        # NEW TABLE: Full Comparison
+        st.subheader("📊 Fixed vs Adjusted - Full Breakdown")
         st.dataframe({
             "Month": month_names,
-            "NASA Sun (kWh/m2/day)": [f"{v:.2f}" for v in nasa],
+            "NASA Sun": [f"{v:.2f}" for v in nasa],
             "Optimal Tilt (°)": [f"{t:.1f}" for t in tilts],
-            "Est. Yield (x tilt gain)": [f"{v * (1+ (t-20)*0.005):.2f}" for v,t in zip(nasa, tilts)]
-        })
+            "Fixed kWh": [f"{v:,.0f}" for v in fixed_yield],
+            "Adjusted kWh": [f"{v:,.0f}" for v in adjusted_yield],
+            "Extra Gain (kWh)": [f"+{v:,.0f}" for v in gain_kwh],
+        }, use_container_width=True)
 
-        annual_tilt = sum(tilts)/12
-        st.info(f"**Recommendation for {st.session_state['loc']}: Set fixed tilt at {annual_tilt:.1f}° facing North. Best months: Sep-Feb with {max(nasa):.1f} kWh/m2/day. Source: NASA POWER ALLSKY_SFC_SW_DWN**")
+        # NEW: RECOMMENDATION BOX
+        st.divider()
+        st.subheader("💡 Recommendation")
+        if gain_pct < 2:
+            rec = f"**Keep it FIXED at {fixed_tilt:.1f}°.** You only gain {total_gain:,.0f} kWh/year ({gain_pct:.1f}%) by adjusting every month — not worth climbing on the roof 12 times! Save time, keep fixed."
+        elif gain_pct < 5:
+            rec = f"**FIXED at {fixed_tilt:.1f}° is best for most people.** Adjusting gives you +{total_gain:,.0f} kWh/year (R{rand_gain:,.0f}/year). Only adjust 2x per year: Summer tilt {sum(tilts[9:]+tilts[:3])/6:.1f}° (Sep-Feb) and Winter tilt {sum(tilts[3:9])/6:.1f}° (Mar-Aug) to get most of the gain."
+        else:
+            rec = f"**Adjust if you can!** You gain +{total_gain:,.0f} kWh/year (R{rand_gain:,.0f}/year) by adjusting monthly. Best: Change tilt at start of each month to the value in the table."
+
+        st.info(f"""
+**For {st.session_state['loc']} with {system_kw:.1f}kW system:**
+
+- **Fixed Tilt {fixed_tilt:.1f}° facing North:** {total_fixed:,.0f} kWh/year = R{total_fixed*price:,.0f} saved/year
+- **Monthly Adjusted:** {total_adjusted:,.0f} kWh/year = R{total_adjusted*price:,.0f} saved/year
+- **Difference:** +{total_gain:,.0f} kWh = +R{rand_gain:,.0f} every year
+
+{rec}
+""")
     else:
-        st.info("👈 Select Province → Town and click to fetch real NASA data. Built for all 9 provinces - from Nongoma to Polokwane.")
+        st.info("👈 Select Province → Town → System Size and click to fetch real NASA data.")
 
 st.divider()
-st.caption("Data: NASA POWER Prediction Of Worldwide Energy Resources, Parameter ALLSKY_SFC_SW_DWN. No API key required. Model: ModelForge Hub V1.2 - From Equation to Impact.")
+st.caption("Data: NASA POWER ALLSKY_SFC_SW_DWN. Model: Fixed vs Adjusted calculation by ModelForge Hub V1.3 - From Equation to Impact.")
