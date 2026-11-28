@@ -1,4 +1,7 @@
 import streamlit as st
+# Google verification
+st.markdown('<meta name="google-site-verification" content="MqnrRx3IXUdLrx38ipraZMOZe72LqdVzVpapgIIVLkU" />', unsafe_allow_html=True)
+
 import requests
 import math
 import matplotlib.pyplot as plt
@@ -18,8 +21,6 @@ st.markdown("""
 </script>
 """, unsafe_allow_html=True)
 
-# Google verification
-st.markdown('<meta name="google-site-verification" content="MqnrRx3IXUdLrx38ipraZMOZe72LqdVzVpapgIIVLkU" />', unsafe_allow_html=True)
 
 st.markdown("""
 <style>
