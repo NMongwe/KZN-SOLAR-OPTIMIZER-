@@ -6,6 +6,18 @@ from PIL import Image
 
 st.set_page_config(page_title="ModelForge Hub - SA Solar Optimizer", page_icon="☀️", layout="wide")
 
+
+# Google Analytics
+st.markdown("""
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+""", unsafe_allow_html=True)
+
 # Google verification
 st.markdown('<meta name="google-site-verification" content="MqnrRx3IXUdLrx38ipraZMOZe72LqdVzVpapgIIVLkU" />', unsafe_allow_html=True)
 
