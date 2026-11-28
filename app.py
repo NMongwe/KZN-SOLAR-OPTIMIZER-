@@ -6,6 +6,9 @@ from PIL import Image
 
 st.set_page_config(page_title="ModelForge Hub - SA Solar Optimizer", page_icon="☀️", layout="wide")
 
+# Google verification
+st.markdown('<meta name="google-site-verification" content="MqnrRx3IXUdLrx38ipraZMOZe72LqdVzVpapgIIVLkU" />', unsafe_allow_html=True)
+
 st.markdown("""
 <style>
 img {image-rendering: -webkit-optimize-contrast;}
